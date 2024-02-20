@@ -6,7 +6,7 @@ import secrets
 import configparser
 import argparse
 
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, render_template
 from xknx import XKNX
 from xknx.io import ConnectionConfig, ConnectionType
 from xknx.tools import read_group_value, group_value_write
@@ -58,6 +58,9 @@ async def write_group(address, val, format):
     async with xknx:
         await group_value_write(xknx, address, val, value_type=format)
 
+@app.route('/')
+def route_root():
+    return render_template('welcome.html', version=version, knx_ip=knx_ip)
 
 @app.route('/api/writegroup', methods=['POST'])
 def route_write_group():
