@@ -4,11 +4,12 @@ import asyncio
 import time
 import secrets
 import configparser
+import argparse
 
 from flask import Flask, jsonify, request, abort
 from xknx import XKNX
 from xknx.io import ConnectionConfig, ConnectionType
-from xknx.tools import read_group_value
+from xknx.tools import read_group_value, group_value_write
 
 ##CONFIG
 config = configparser.ConfigParser()
@@ -30,7 +31,8 @@ xknx = None
 
 loop = asyncio.get_event_loop()
 
-def main():
+
+def connection():
     global xknx
     connection_config = ConnectionConfig(
         connection_type=ConnectionType.TUNNELING,
@@ -51,10 +53,29 @@ async def read_group(address, format):
         result = await read_group_value(xknx, address, value_type=format)
         return result
 
+##Write to Group
+async def write_group(address, val, format):
+    async with xknx:
+        await group_value_write(xknx, address, val, value_type=format)
+
+
+@app.route('/api/writegroup', methods=['POST'])
+def route_write_group():
+    data = request.json
+    loop.run_until_complete(write_group(data['group_address'], data['val'], data['format']))
+    response = {
+        "data": {
+            "success": "true"
+        }
+    }
+    if checkToken(data['token']):
+        return jsonify(response)
+    else:
+        return abort(403)
 
 
 @app.route('/api/readgroup', methods=['POST'])
-def get_val():
+def route_read_group():
     data = request.json
     response = {
         "data": {
@@ -67,5 +88,5 @@ def get_val():
         return abort(403)
 
 if __name__ == "__main__":
-    main()
-    app.run(host=server_ip, port=server_port, debug=True, threaded=True)
+    connection()
+    app.run(host=server_ip, port=server_port, debug=False, threaded=True)

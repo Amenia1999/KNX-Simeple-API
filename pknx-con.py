@@ -9,7 +9,7 @@ from flask import Flask, jsonify, request
 from xknx import XKNX
 from xknx.io import ConnectionConfig, ConnectionType
 from xknx.tools import read_group_value
-from xknx.tools import group_value_write
+from xknx.tools import group_value_write, group_value_response
 
 ##CONFIG
 config = configparser.ConfigParser()
@@ -47,9 +47,15 @@ async def main() -> None:
     )
     xknx = XKNX(connection_config=connection_config)
 
+    # async with xknx:
+    #     start_time = time.time()
+    #     result = await read_group_value(xknx, "0/0/6", value_type="temperature")
+    #     print(f"Value: {result} - took {(time.time() - start_time):0.3f} seconds")
+
     async with xknx:
-        start_time = time.time()
-        result = await read_group_value(xknx, "0/0/6", value_type="temperature")
-        print(f"Value: {result} - took {(time.time() - start_time):0.3f} seconds")
+        # send a DPT 9.001 temperature value
+        await group_value_write(xknx, "5/1/20", 21.7, value_type="temperature")
+        # send a response DPT 1 binary value
+        await group_value_response(xknx, "5/1/20", True)
 
 asyncio.run(main())
