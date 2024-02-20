@@ -60,7 +60,7 @@ async def write_group(address, val, format):
 
 @app.route('/')
 def route_root():
-    return render_template('welcome.html', version=version, knx_ip=knx_ip)
+    return render_template('welcome.html', version=version, knx_ip=knx_ip, server_ip=server_ip, server_port=server_port)
 
 @app.route('/api/writegroup', methods=['POST'])
 def route_write_group():
@@ -68,7 +68,7 @@ def route_write_group():
     loop.run_until_complete(write_group(data['group_address'], data['val'], data['format']))
 
     response = {"data": {"success": "true"}}
-    
+
     if checkToken(data['token']):
         return jsonify(response)
     else:

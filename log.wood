@@ -497,3 +497,75 @@ INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a
  * Running on http://10.106.67.2:5000
 INFO:werkzeug:[33mPress CTRL+C to quit[0m
 INFO:werkzeug:127.0.0.1 - - [20/Feb/2024 19:47:23] "GET / HTTP/1.1" 200 -
+INFO:xknx.log:XKNX v2.11.2 starting tunneling connection to KNX bus.
+WARNING:xknx.log:Error: KNX bus did not respond in time (2.0 secs) to GroupValueRead request for: 0/0/10
+INFO:werkzeug:127.0.0.1 - - [20/Feb/2024 19:50:13] "POST /api/readgroup HTTP/1.1" 200 -
+INFO:xknx.log:XKNX v2.11.2 starting tunneling connection to KNX bus.
+WARNING:xknx.log:Error: KNX bus did not respond in time (2.0 secs) to GroupValueRead request for: 0/0/10
+INFO:werkzeug:127.0.0.1 - - [20/Feb/2024 19:52:22] "POST /api/readgroup HTTP/1.1" 200 -
+INFO:xknx.log:XKNX v2.11.2 starting tunneling connection to KNX bus.
+WARNING:xknx.log:Error: KNX bus did not respond in time (2.0 secs) to GroupValueRead request for: 0/0/10
+INFO:werkzeug:127.0.0.1 - - [20/Feb/2024 19:52:26] "POST /api/readgroup HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.106.67.2:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:xknx.log:XKNX v2.11.2 starting tunneling connection to KNX bus.
+WARNING:xknx.log:Error: KNX bus did not respond in time (2.0 secs) to GroupValueRead request for: 0/0/10
+ERROR:main:Exception on /api/readgroup [POST]
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/site-packages/flask/app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/flask/app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/flask/app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/flask/app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/amenia/Documents/Projekte/pyknx-con/main.py", line 84, in route_read_group
+    if response_val is null:
+                       ^^^^
+NameError: name 'null' is not defined
+INFO:werkzeug:127.0.0.1 - - [20/Feb/2024 19:52:37] "[35m[1mPOST /api/readgroup HTTP/1.1[0m" 500 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.106.67.2:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:xknx.log:XKNX v2.11.2 starting tunneling connection to KNX bus.
+WARNING:xknx.log:Error: KNX bus did not respond in time (2.0 secs) to GroupValueRead request for: 0/0/10
+INFO:werkzeug:127.0.0.1 - - [20/Feb/2024 19:53:29] "POST /api/readgroup HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.106.67.2:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:xknx.log:XKNX v2.11.2 starting tunneling connection to KNX bus.
+WARNING:xknx.log:Error: KNX bus did not respond in time (2.0 secs) to GroupValueRead request for: 0/0/10
+INFO:werkzeug:127.0.0.1 - - [20/Feb/2024 19:54:19] "POST /api/readgroup HTTP/1.1" 200 -
+INFO:xknx.log:XKNX v2.11.2 starting tunneling connection to KNX bus.
+INFO:werkzeug:127.0.0.1 - - [20/Feb/2024 19:54:26] "POST /api/readgroup HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.106.67.2:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:xknx.log:XKNX v2.11.2 starting tunneling connection to KNX bus.
+INFO:werkzeug:127.0.0.1 - - [20/Feb/2024 19:54:57] "POST /api/readgroup HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.106.67.2:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [20/Feb/2024 20:20:42] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.106.67.2:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [20/Feb/2024 20:21:04] "GET / HTTP/1.1" 200 -
