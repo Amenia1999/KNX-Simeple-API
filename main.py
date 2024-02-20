@@ -66,11 +66,9 @@ def route_root():
 def route_write_group():
     data = request.json
     loop.run_until_complete(write_group(data['group_address'], data['val'], data['format']))
-    response = {
-        "data": {
-            "success": "true"
-        }
-    }
+
+    response = {"data": {"success": "true"}}
+    
     if checkToken(data['token']):
         return jsonify(response)
     else:
@@ -80,11 +78,15 @@ def route_write_group():
 @app.route('/api/readgroup', methods=['POST'])
 def route_read_group():
     data = request.json
-    response = {
-        "data": {
-            "val": loop.run_until_complete(read_group(data['group_address'], data['format']))
-        }
-    }
+    response_val = loop.run_until_complete(read_group(data['group_address'], data['format']))
+
+
+    if response_val is None:
+        response = {"data": {"success": "false"}}
+    else:
+        response = {"data": {"success": "true","val": response_val}}
+
+
     if checkToken(data['token']):
         return jsonify(response)
     else:
