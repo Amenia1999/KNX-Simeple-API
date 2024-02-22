@@ -14,13 +14,13 @@
         h1 {
             color: #333;
         }
-        #data {
+        .data {
             margin-top: 20px;
             font-size: 18px;
             color: #666;
         }
         #author {
-            margin-top: 20px;
+            margin-top: 60px;
             font-style: italic;
             color: #666;
         }
@@ -29,14 +29,67 @@
             font-size: 14px;
             color: #999;
         }
+        #terminal-container {
+            position: relative;
+            width: 80%;
+            margin: 20px auto;
+            height: 15rem; /* Höhe des Terminalfensters */
+            padding: 5px;
+        }
+        #terminal {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #919191;
+            background-color: rgb(255, 255, 255);
+            color: gray;
+            font-family: monospace;
+            padding: 20px;
+            resize: none; /* Deaktiviere das Ändern der Größe durch den Benutzer */
+            overflow-y: scroll; /* Scrollelement anzeigen */
+        }
+        #terminal-label {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: black;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <h1>Simple KNX API</h1>
-    <div id="data">KNX Interface IP: <strong>{{ knx_ip }}</strong></div>
-    <div id="data">KNX API IP: <strong>{{ server_ip }}</strong></div>
-    <div id="data">KNX API PORT: <strong>{{ server_port }}</strong></div>
+    <div class="data">KNX Interface IP: <strong>{{ knx_ip }}</strong></div>
+    <div class="data">KNX API IP: <strong>{{ server_ip }}</strong></div>
+    <div class="data">KNX API PORT: <strong>{{ server_port }}</strong></div>
+    <div id="terminal-container">
+        <div id="terminal-label">Busmonitor</div>
+        <textarea id="terminal" readonly></textarea>
+    </div>
     <div id="author">Author: Amenia Hina Grabarek</div>
     <div id="version">Version: <strong>{{ version }}</strong></div>
 </body>
+
+<script>
+     var socket = io();
+
+// Event listener für empfangene KNX-Daten
+socket.on('knx_live_data', function(data) {
+    console.log('KNX live data received:', data);
+    // Füge die empfangenen Daten als neue Zeile im Terminalfenster hinzu
+    addToTerminal(data);
+});
+
+// Funktion zum Hinzufügen von Text zum Terminalfenster
+function addToTerminal(text) {
+    var terminal = document.getElementById('terminal');
+    terminal.value += text + '\n'; // Füge einen Zeilenumbruch nach jedem Text hinzu
+    // Scrolle das Terminalfenster automatisch nach unten, um die neuen Daten anzuzeigen
+    terminal.scrollTop = terminal.scrollHeight;
+}
+</script>
 </html>

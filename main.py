@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import asyncio
 import time
 import secrets
 import configparser
@@ -10,6 +9,7 @@ from flask import Flask, jsonify, request, abort, render_template
 from xknx import XKNX
 from xknx.io import ConnectionConfig, ConnectionType
 from xknx.tools import read_group_value, group_value_write
+from flask_socketio import SocketIO, emit
 
 ##CONFIG
 config = configparser.ConfigParser()
@@ -22,8 +22,6 @@ server_ip = config['Server']['ip']
 server_port = config['Server']['port']
 server_log = config['Server']['log_file']
 server_token = config['Server']['token']
-
-
 
 app = Flask(__name__)
 version = "0.0.1"
@@ -51,41 +49,54 @@ def validateToken(token):
         return True
     else:
         return abort(403)
+        
+##API
+##Read from Address
+async def read_group(address, format):
+    async with xknx:
+        result = await read_group_value(xknx, address, value_type=format)
+        return result
 
+##Write to Group
+async def write_group(address, val, format):
+    async with xknx:
+        await group_value_write(xknx, address, val, value_type=format)
 
 @app.route('/')
 def route_root():
     return render_template('welcome.html', version=version, knx_ip=knx_ip, server_ip=server_ip, server_port=server_port)
 
-##Busmonitor
-##On
-##OFF
-
 @app.route('/api/writegroup', methods=['POST'])
-async def route_write_group():
-    async with xknx:
-        data = request.json
-        await group_value_write(xknx, data['group_address'], data['val'], value_type=data['format'])
-        response = {"data": {"success": "true"}}
+def route_write_group():
+    data = request.json
+    loop.run_until_complete(write_group(data['group_address'], data['val'], data['format']))
 
-        if validateToken(data['token']):
-            return jsonify(response)
+    response = {"data": {"success": "true"}}
 
+    if validateToken(data['token']):
+        return jsonify(response)
 
 
 @app.route('/api/readgroup', methods=['POST'])
-async def route_read_group():
-    async with xknx:
-        data = request.json
-        response_val = await read_group_value(xknx, data['group_address'], value_type=data['format'])
+def route_read_group():
+    data = request.json
+    response_val = loop.run_until_complete(read_group(data['group_address'], data['format']))
 
-        if response_val is None:
-            response = {"data": {"success": "false"}}
-        else:
-            response = {"data": {"success": "true","val": response_val}}
 
-        if validateToken(data['token']):
-            return jsonify(response)
+    if response_val is None:
+        response = {"data": {"success": "false"}}
+    else:
+        response = {"data": {"success": "true","val": response_val}}
+
+    if validateToken(data['token']):
+        return jsonify(response)
+
+
+###########################################
+##                Socket                 ##
+###########################################
+
+
 
 
 
