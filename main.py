@@ -45,6 +45,12 @@ def connection():
 ##HELPERS
 def checkToken(token):
     return token == server_token
+
+def validateToken(token):
+    if checkToken(token):
+        return True
+    else:
+        return abort(403)
         
 ##API
 ##Read from Address
@@ -69,10 +75,8 @@ def route_write_group():
 
     response = {"data": {"success": "true"}}
 
-    if checkToken(data['token']):
+    if validateToken(data['token']):
         return jsonify(response)
-    else:
-        return abort(403)
 
 
 @app.route('/api/readgroup', methods=['POST'])
@@ -86,11 +90,9 @@ def route_read_group():
     else:
         response = {"data": {"success": "true","val": response_val}}
 
-
-    if checkToken(data['token']):
+    if validateToken(data['token']):
         return jsonify(response)
-    else:
-        return abort(403)
+
 
 if __name__ == "__main__":
     connection()
